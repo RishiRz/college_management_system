@@ -271,14 +271,6 @@ export default function Timetable() {
     (entry) => entry.status === "Cancelled",
   ).length;
 
-  const totalSubjects = new Set(
-    entries.map((entry) => entry.subject),
-  ).size;
-
-  const totalFaculty = new Set(
-    entries.map((entry) => entry.faculty),
-  ).size;
-
   /*
    * When changing class, reset stream.
    */
@@ -513,7 +505,7 @@ export default function Timetable() {
             SUMMARY CARDS
         ========================================= */}
 
-        <div className="mb-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mb-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
           <SummaryCard
             title="Total Classes"
@@ -531,17 +523,10 @@ export default function Timetable() {
           />
 
           <SummaryCard
-            title="Subjects"
-            value={totalSubjects.toString()}
-            description="Subjects in timetable"
-            icon="◈"
-          />
-
-          <SummaryCard
-            title="Faculty"
-            value={totalFaculty.toString()}
-            description="Faculty assigned"
-            icon="♙"
+            title="Cancelled"
+            value={cancelledClasses.toString()}
+            description="Cancelled entries"
+            icon="✕"
           />
 
         </div>

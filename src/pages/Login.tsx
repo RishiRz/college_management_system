@@ -1,9 +1,11 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { useAuth } from "../context/AuthContext";
 
 type Role = "ADMIN" | "FACULTY";
 
 export default function Login() {
+  const { login } = useAuth();
   const [role, setRole] = useState<Role>("ADMIN");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +14,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setError("");
@@ -34,22 +36,23 @@ export default function Login() {
 
     setLoading(true);
 
-    // Temporary frontend-only login.
-    // Backend authentication will be added later.
-    setTimeout(() => {
+    try {
+      const user = await login(email.trim(), password, rememberMe);
+
+      // The role toggle is a UI hint — the server is authoritative.
+      // Warn if the account's actual role differs from the selected tab.
+      if (user.role !== role) {
+        setError(
+          `This account is registered as ${user.role.toLowerCase()}. You selected ${role.toLowerCase()}.`,
+        );
+      }
+      // On success, AuthProvider holds the user and App routes away
+      // from /login automatically. No alert, no password logging.
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Login failed. Try again.");
+    } finally {
       setLoading(false);
-
-      console.log({
-        role,
-        email,
-        password,
-        rememberMe,
-      });
-
-      alert(
-        `${role === "ADMIN" ? "Administrator" : "Faculty"} login submitted`
-      );
-    }, 1000);
+    }
   };
 
   return (

@@ -1,4 +1,8 @@
-export default function AdminHeader() {
+import { useState } from "react";
+
+export default function AdminHeader({ onLogout }: { onLogout: () => void }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <header className="flex h-20 items-center justify-between border-b border-slate-200 bg-white px-5 sm:px-8">
 
@@ -38,29 +42,45 @@ export default function AdminHeader() {
         <div className="h-7 w-px bg-slate-200" />
 
         {/* Admin */}
-        <button className="flex items-center gap-3 rounded-xl px-2 py-1.5 hover:bg-slate-50">
+        <div className="relative">
+          <button
+            onClick={() => setMenuOpen((v) => !v)}
+            className="flex items-center gap-3 rounded-xl px-2 py-1.5 hover:bg-slate-50"
+          >
 
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-100 text-xs font-bold text-sky-700">
-            AD
-          </div>
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-100 text-xs font-bold text-sky-700">
+              AD
+            </div>
 
-          <div className="hidden text-left sm:block">
+            <div className="hidden text-left sm:block">
 
-            <p className="text-xs font-bold text-slate-700">
-              Administrator
-            </p>
+              <p className="text-xs font-bold text-slate-700">
+                Administrator
+              </p>
 
-            <p className="text-[10px] text-slate-400">
-              System Admin
-            </p>
+              <p className="text-[10px] text-slate-400">
+                System Admin
+              </p>
 
-          </div>
+            </div>
 
-          <span className="hidden text-xs text-slate-400 sm:block">
-            ▼
-          </span>
+            <span className="hidden text-xs text-slate-400 sm:block">
+              ▼
+            </span>
 
-        </button>
+          </button>
+
+          {menuOpen && (
+            <div className="absolute right-0 top-full z-20 mt-2 w-44 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
+              <button
+                onClick={onLogout}
+                className="block w-full px-4 py-2.5 text-left text-xs font-semibold text-red-600 hover:bg-red-50"
+              >
+                Sign out
+              </button>
+            </div>
+          )}
+        </div>
 
       </div>
 

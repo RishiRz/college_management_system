@@ -1,0 +1,100 @@
+// Prisma schema
+// College Management System
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum UserRole {
+  ADMIN
+  FACULTY
+  STUDENT
+}
+
+enum FacultyStatus {
+  ACTIVE
+  ON_LEAVE
+  INACTIVE
+}
+
+// ============================================================
+// USER
+// Authentication account
+// ============================================================
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         UserRole
+
+  faculty      Faculty?
+  sessions     Session[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([email])
+  @@index([role])
+}
+
+// ============================================================
+// SESSION
+// Opaque server-side sessions. Only a SHA-256 hash of the
+// token is stored; the raw token lives in an HttpOnly cookie.
+// ============================================================
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  ipAddress String?
+  userAgent String?
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// ============================================================
+// FACULTY
+// Faculty profile
+// ============================================================
+
+model Faculty {
+  id            String        @id @default(cuid())
+
+  facultyId     String        @unique
+  name          String
+  email         String        @unique
+  phone         String?
+
+  department    String
+  designation   String
+  joiningYear   Int
+
+  status        FacultyStatus @default(ACTIVE)
+
+  userId        String        @unique
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([department])
+  @@index([status])
+  @@index([designation])
+}

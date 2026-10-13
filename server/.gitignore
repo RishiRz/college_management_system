@@ -1,0 +1,13 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/src/generated/prisma
+/dist
+
+# Local agent/IDE skill scaffolding (tooling noise, not app code)
+.agents/
+.claude/
+.windsurf/
+skills/
+skills-lock.json

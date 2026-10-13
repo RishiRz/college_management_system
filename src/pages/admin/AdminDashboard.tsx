@@ -3,15 +3,15 @@ import AdminHeader from "../../components/admin/AdminHeader";
 import StatCard from "../../components/admin/StatCard";
 import RecentActivity from "../../components/admin/RecentActivity";
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   return (
     <div className="min-h-screen bg-slate-50">
 
-      <AdminSidebar />
+      <AdminSidebar onLogout={onLogout} />
 
       <div className="lg:pl-64">
 
-        <AdminHeader />
+        <AdminHeader onLogout={onLogout} />
 
         <main className="p-5 sm:p-8">
 

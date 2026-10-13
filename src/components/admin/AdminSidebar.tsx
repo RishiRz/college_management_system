@@ -32,7 +32,11 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({
+  onLogout,
+}: {
+  onLogout: () => void;
+}) {
   const [activeItem, setActiveItem] = useState("Dashboard");
 
   return (
@@ -108,7 +112,10 @@ export default function AdminSidebar() {
       {/* Bottom */}
       <div className="border-t border-slate-100 p-4">
 
-        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm text-slate-500 transition hover:bg-red-50 hover:text-red-600">
+        <button
+          onClick={onLogout}
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm text-slate-500 transition hover:bg-red-50 hover:text-red-600"
+        >
 
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100">
             ↪

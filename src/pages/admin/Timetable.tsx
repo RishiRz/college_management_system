@@ -592,7 +592,7 @@ export default function Timetable() {
 
           <SummaryCard
             title="Active Classes"
-            value={activeClasses.toString()}
+            value={`${activeClasses.toString()} active · ${cancelledClasses.toString()} cancelled`}
             description="Currently scheduled"
             icon="✓"
             positive
